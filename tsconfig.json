@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "./dist",
+    "target": "es2015",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es7"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "filesGlob": [
+    "src/**/*.ts"
+  ],
+  "ignore": [
+    "node_modules"
+  ]
+}
