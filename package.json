@@ -14,6 +14,7 @@
     "watch": "nodemon -e ts,tsx,js,json --watch src/ --exec 'tsc --pretty --noEmit && yarn fmt && yarn lint'"
   },
   "devDependencies": {
+    "@types/bs58": "^3.0.30",
     "@types/jest": "^20.0.2",
     "@types/node": "^8.0.11",
     "babel-cli": "^6.24.1",
@@ -44,5 +45,10 @@
       "js",
       "json"
     ]
+  },
+  "dependencies": {
+    "bn.js": "^4.11.7",
+    "bs58": "^4.0.1",
+    "elliptic": "^6.4.0"
   }
 }
