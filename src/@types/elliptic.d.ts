@@ -10,17 +10,18 @@ declare module 'elliptic' {
     isInfinity (): boolean
     encode (encoding: 'hex', compact: boolean): string
     encode (encoding: null, compact: boolean): number[]
+    encode (): number[]
   }
 
   declare class KeyPair {
     priv: Point
     pub: Point
+    getPublic (): Point
   }
 
   declare class EC {
     n: BN
     g: Point
-
     constructor (curve: string)
     keyFromPublic (key: string, encoding: 'hex'): KeyPair
     keyFromPublic (key: Buffer): KeyPair

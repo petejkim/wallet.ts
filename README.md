@@ -35,5 +35,24 @@ const words: string[] = mnemonic.words
 const seed: Buffer = mnemonic.toSeed()
 ```
 
+## Ethereum Address / EIP 55 checksum
+
+```typescript
+const { EthereumAddress } = require('wallet.ts')
+
+const publicKey = Buffer.from(
+  '028a8c59fa27d1e0f1643081ff80c3cf0392902acbf76ab0dc9c414b8d115b0ab3',
+  'hex'
+)
+const address: string = EthereumAddress.from(publicKey)
+// => 0xD11A13f484E2f2bD22d93c3C3131f61c05E876a
+const valid: boolean = EthereumAddress.isValid(address)
+// => true
+const checksumAddress: string = EthereumAddress.checksumAddress(
+  '0xd11a13f484e2f2bd22d93c3c3131f61c05e876a'
+)
+// => 0xD11A13f484E2f2bD22d93c3C3131f61c05E876a
+```
+
 - - -
 Copyright © 2017 Peter Jihoon Kim. This project is licensed under the [ISC license](https://raw.githubusercontent.com/petejkim/wallet.ts/master/LICENSE).
