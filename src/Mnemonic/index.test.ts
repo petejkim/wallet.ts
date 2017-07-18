@@ -2,7 +2,7 @@ import Mnemonic from '.'
 
 describe('generate', () => {
   test('generates mnemonic phrase from entropy', () => {
-    const testCases = {
+    const testCases: { [key: string]: string } = {
       '4d3ef17b17a8a7ec7dfe3e112f7a61f6':
         'essay wasp gain consider media wage wave sick bachelor knock observe undo',
       baa076aafddbeb78ea973289feb05383:
@@ -26,7 +26,7 @@ describe('generate', () => {
   })
 
   test('returns null when an entropy with an invalid length is passed', () => {
-    const testCases = [
+    const testCases: string[] = [
       '4d3ef17b17a8a7ec7dfe3e112f7a61',
       'baa076aafddbeb78ea973289feb053',
       '50df9ecd8b1afc4f4afa49563b'
@@ -41,7 +41,7 @@ describe('generate', () => {
 
 describe('parse', () => {
   test('parses mnemonic, verifies checksum, and decodes back to entropy', () => {
-    const testCases = {
+    const testCases: { [key: string]: string } = {
       'essay wasp gain consider media wage wave sick bachelor knock observe undo':
         '4d3ef17b17a8a7ec7dfe3e112f7a61f6',
       'rival admit primary wing salt round prevent town measure void belt almost':
@@ -64,7 +64,7 @@ describe('parse', () => {
   })
 
   test('returns null when verification fails', () => {
-    const testCases = [
+    const testCases: string[] = [
       'essay wasp gain consider media wage wave sick bachelor knock observe',
       'essay wasp gain consider media wage wave sick bachelor knock observe uncle',
       'river admit primary wing salt round prevent town measure void belt almost',
@@ -79,7 +79,7 @@ describe('parse', () => {
 
 describe('toSeed', () => {
   test('returns a binary seed derived from a mnemonic phrase', () => {
-    const testCases = {
+    const testCases: { [key: string]: string } = {
       'essay wasp gain consider media wage wave sick bachelor knock observe undo':
         'b7df235f1e8addda6befbdf66f4df613474e8ff6041c7826e4df7fa68aa8c244a1d687eda050f97fc20fc2fcd8c09e19ef21d6c14f523639b033e9fc4e6375a6',
       'rival admit primary wing salt round prevent town measure void belt almost':
