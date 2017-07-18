@@ -1,4 +1,4 @@
-import { HDKey } from '.'
+import HDKey from '.'
 
 describe('parseMasterSeed', () => {
   test('initialize an instance of HDKey from master seed', () => {

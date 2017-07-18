@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import wordlist from './wordlist.en'
 
-export class Mnemonic {
+export default class Mnemonic {
   private _entropy: Buffer
   private _words: string[]
   private _phrase: string
@@ -162,5 +162,3 @@ function arraysEqual (a: Array<any>, b: Array<any>): boolean {
   }
   return true
 }
-
-export default { Mnemonic }

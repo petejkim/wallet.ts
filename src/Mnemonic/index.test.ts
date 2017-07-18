@@ -1,4 +1,4 @@
-import { Mnemonic } from '.'
+import Mnemonic from '.'
 
 describe('generate', () => {
   test('generates mnemonic phrase from entropy', () => {

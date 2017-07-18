@@ -1,11 +1,11 @@
-import * as bip39 from './bip39'
-import * as bip32 from './bip32'
 import EthereumAddress from './EthereumAddress'
+import HDKey from './HDKey'
+import Mnemonic from './Mnemonic'
 
-export { bip32, bip39, EthereumAddress }
+export { EthereumAddress, HDKey, Mnemonic }
 
 export default {
-  bip32,
-  bip39,
-  EthereumAddress
+  EthereumAddress,
+  HDKey,
+  Mnemonic
 }

@@ -17,7 +17,7 @@ export interface HDKeyConstructorOptions {
   version?: VersionBytes
 }
 
-export class HDKey {
+export default class HDKey {
   private _version: VersionBytes
   private _privateKey?: Buffer
   private _publicKey: Buffer
