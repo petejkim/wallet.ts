@@ -1,3 +1,7 @@
+.DS_Store
+.babelrc
 tsconfig.json
 tslint.json
 src
+npm-debug.log
+yarn-error.log
