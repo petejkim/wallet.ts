@@ -1,7 +1,8 @@
 {
   "name": "wallet.ts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Utilities for cryptocurrency wallets, written in TypeScript",
+  "keywords": ["crypto", "cryptocurrency", "bip32", "bip39", "bip44", "hdkey", "mnemonic", "bitcoin", "ethereum", "litecoin", "eip55", "erc20", "wallet", "typescript"],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/petejkim/wallet.ts",
