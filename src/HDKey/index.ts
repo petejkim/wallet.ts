@@ -70,7 +70,7 @@ export default class HDKey {
     version: VersionBytes = versions.bitcoinMain
   ): HDKey {
     // version_bytes[4] || depth[1] || parent_fingerprint[4] || index[4] || chain_code[32] || key_data[33] || checksum[4]
-    const decoded = new Buffer(bs58.decode(key))
+    const decoded = Buffer.from(bs58.decode(key))
     if (decoded.length > 112) {
       throw new Error('invalid extended key')
     }
@@ -190,7 +190,7 @@ export default class HDKey {
     }
 
     let index: number = childIndex
-    const data: Buffer = new Buffer(37)
+    const data: Buffer = Buffer.alloc(37)
     let o: number = 0
     if (hardened) {
       if (!this.privateKey) {
@@ -243,7 +243,7 @@ export default class HDKey {
       if (childKey.isInfinity()) {
         return this.deriveChildKey(childIndex + 1, false)
       }
-      const compressedChildKey = new Buffer(childKey.encode(null, true))
+      const compressedChildKey = Buffer.from(childKey.encode(null, true))
 
       return new HDKey({
         depth: this.depth + 1,
@@ -258,7 +258,7 @@ export default class HDKey {
 
   private serialize (version: number, key: Buffer): string {
     // version_bytes[4] || depth[1] || parent_fingerprint[4] || index[4] || chain_code[32] || key_data[33] || checksum[4]
-    const buf = new Buffer(78)
+    const buf = Buffer.alloc(78)
     let o: number = buf.writeUInt32BE(version, 0)
     o = buf.writeUInt8(this.depth, o)
     o += this.parentFingerprint ? this.parentFingerprint.copy(buf, o) : 4
