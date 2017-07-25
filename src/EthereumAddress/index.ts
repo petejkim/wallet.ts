@@ -48,7 +48,14 @@ export default class EthereumAddress {
       return true
     }
 
-    return addr === EthereumAddress.checksumAddress(addr).slice(2)
+    let checksumAddress: string
+    try {
+      checksumAddress = EthereumAddress.checksumAddress(addr)
+    } catch (_err) {
+      return false
+    }
+
+    return addr === checksumAddress.slice(2)
   }
 
   get publicKey (): Buffer {

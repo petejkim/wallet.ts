@@ -129,6 +129,21 @@ describe('isValid', () => {
     ).toBe(false)
   })
 
+  test('rejects addresses with invalid characters', () => {
+    expect(
+      EthereumAddress.isValid('0x5aAeb60!3F3E94C9b9A09f33669435E7Ef1BeAed')
+    ).toBe(false)
+    expect(
+      EthereumAddress.isValid('0xfB 916095ca1df60bB79Ce92cE3Ea74c37c5d359')
+    ).toBe(false)
+    expect(
+      EthereumAddress.isValid('5aAeb6$53F3E94C9b9A09f33669435E7Ef1BeAed')
+    ).toBe(false)
+    expect(
+      EthereumAddress.isValid('fB6916095ca1df60#B79Ce92cE3Ea74c37c5d359')
+    ).toBe(false)
+  })
+
   test('accepts addresses with valid mixed-case checksum', () => {
     expect(
       EthereumAddress.isValid('0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed')
