@@ -33,6 +33,8 @@ const walletPublicKey = wallet.publicKey
 // => <Buffer 03 e9 f6 10 ...>
 ```
 
+[View Source](https://github.com/petejkim/wallet.ts/blob/master/src/HDKey/index.ts)
+
 ## Mnemonic code for generating deterministic keys [(BIP 38)](https://github.com/bitcoin/bips/blob/master/bip-38.mediawiki)
 
 ```javascript
@@ -52,6 +54,27 @@ const seed = mnemonic.toSeed()
 // => <Buffer cd 07 60 43 ...>
 ```
 
+[View Source](https://github.com/petejkim/wallet.ts/blob/master/src/Mnemonic/index.ts)
+
+## Bitcoin Address
+
+```javascript
+const { BitcoinAddress } = require('wallet.ts')
+
+const publicKey = Buffer.from(
+  '0250863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b2352',
+  'hex'
+)
+
+const address = BitcoinAddress.from(publicKey).address
+// => '16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM'
+
+const valid = BitcoinAddress.isValid(address)
+// => true
+```
+
+[View Source](https://github.com/petejkim/wallet.ts/blob/master/src/BitcoinAddress/index.ts)
+
 ## Ethereum Address / EIP 55 checksum
 
 ```javascript
@@ -62,7 +85,7 @@ const publicKey = Buffer.from(
   'hex'
 )
 
-const address = EthereumAddress.from(publicKey)
+const address = EthereumAddress.from(publicKey).address
 // => 0xD11A13f484E2f2bD22d93c3C3131f61c05E876a
 
 const valid = EthereumAddress.isValid(address)
@@ -71,6 +94,8 @@ const valid = EthereumAddress.isValid(address)
 const checksumAddress = EthereumAddress.checksumAddress('0xd11a13f484e2f2bd22d93c3c3131f61c05e876a')
 // => 0xD11A13f484E2f2bD22d93c3C3131f61c05E876a
 ```
+
+[View Source](https://github.com/petejkim/wallet.ts/blob/master/src/EthereumAddress/index.ts)
 
 - - -
 Copyright © 2017 Peter Jihoon Kim. This project is licensed under the [ISC license](https://raw.githubusercontent.com/petejkim/wallet.ts/master/LICENSE).

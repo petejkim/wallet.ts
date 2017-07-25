@@ -2,7 +2,7 @@ declare module 'elliptic' {
   import BN from 'bn.js'
   import { Buffer } from 'buffer'
 
-  declare class Point {
+  export declare class Point {
     x: BN
     y: BN
     mul (k: BN): Point
@@ -13,13 +13,13 @@ declare module 'elliptic' {
     encode (): number[]
   }
 
-  declare class KeyPair {
+  export declare class KeyPair {
     priv: Point
     pub: Point
     getPublic (): Point
   }
 
-  declare class EC {
+  export declare class EC {
     n: BN
     g: Point
     constructor (curve: string)
