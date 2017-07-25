@@ -1,7 +1,5 @@
-import elliptic from 'elliptic'
 import createKeccakHash from 'keccak/js'
-
-const secp256k1 = new elliptic.ec('secp256k1')
+import { uncompressPublicKey } from '../util'
 
 export default class EthereumAddress {
   private _publicKey: Buffer
@@ -9,9 +7,6 @@ export default class EthereumAddress {
   private _address?: string
 
   private constructor (publicKey: Buffer) {
-    if (!isPublicKeyValid(publicKey)) {
-      throw new Error('invalid public key')
-    }
     this._publicKey = uncompressPublicKey(publicKey)
   }
 
@@ -77,17 +72,4 @@ export default class EthereumAddress {
     }
     return this._address
   }
-}
-
-function isPublicKeyValid (publicKey: Buffer): boolean {
-  const length = publicKey.length
-  if (length !== 33 && length !== 65) {
-    return false
-  }
-  const firstByte = publicKey[0]
-  return firstByte >= 2 && firstByte <= 4
-}
-
-function uncompressPublicKey (publicKey: Buffer): Buffer {
-  return Buffer.from(secp256k1.keyFromPublic(publicKey).getPublic().encode())
 }
