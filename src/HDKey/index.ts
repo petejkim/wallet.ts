@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 import bs58 from 'bs58'
-import versions, { VersionBytes } from './versions'
+import versions, { VersionBytes } from '../versions'
 import BN from 'bn.js'
 import elliptic from 'elliptic'
 
@@ -98,8 +98,8 @@ export default class HDKey {
     const publicKey = keyData[0] !== 0 ? keyData : undefined
 
     if (
-      (privateKey && versionRead !== version.private) ||
-      (publicKey && versionRead !== version.public)
+      (privateKey && versionRead !== version.bip32.private) ||
+      (publicKey && versionRead !== version.bip32.public)
     ) {
       throw new Error('invalid version bytes')
     }
@@ -153,12 +153,12 @@ export default class HDKey {
 
   get extendedPrivateKey (): string | null {
     return this._privateKey
-      ? this.serialize(this._version.private, this._privateKey)
+      ? this.serialize(this._version.bip32.private, this._privateKey)
       : null
   }
 
   get extendedPublicKey (): string {
-    return this.serialize(this._version.public, this._publicKey)
+    return this.serialize(this._version.bip32.public, this._publicKey)
   }
 
   derive (chain: string): HDKey {
