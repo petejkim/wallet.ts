@@ -1,7 +1,8 @@
-import crypto from 'crypto'
-import bs58 from 'bs58'
 import versions, { VersionBytes } from '../versions'
+
 import BN from 'bn.js'
+import bs58 from 'bs58'
+import crypto from 'crypto'
 import elliptic from 'elliptic'
 
 const HARDENED_KEY_OFFSET = 0x80000000
@@ -42,11 +43,19 @@ export default class HDKey {
     if (privateKey) {
       this._privateKey = privateKey
       const ecdh = crypto.createECDH('secp256k1')
-      ecdh.setPrivateKey(privateKey)
-      this._publicKey = Buffer.from(
-        ecdh.getPublicKey('latin1', 'compressed'),
-        'latin1'
-      )
+      if ((ecdh as any).curve && (ecdh as any).curve.keyFromPrivate) {
+        // ECDH is not native, fallback to pure-JS elliptic lib
+        this._publicKey = Buffer.from(
+          secp256k1.keyFromPrivate(privateKey).getPublic(true, 'hex'),
+          'hex'
+        )
+      } else {
+        ecdh.setPrivateKey(privateKey)
+        this._publicKey = Buffer.from(
+          ecdh.getPublicKey('latin1', 'compressed'),
+          'latin1'
+        )
+      }
     } else if (publicKey) {
       this._publicKey = publicKey
     }

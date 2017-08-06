@@ -17,14 +17,18 @@ declare module 'elliptic' {
     priv: Point
     pub: Point
     getPublic (): Point
+    getPublic (encoding: 'hex'): string
+    getPublic (compact: boolean, encoding: 'hex'): string
   }
 
   export declare class EC {
     n: BN
     g: Point
     constructor (curve: string)
-    keyFromPublic (key: string, encoding: 'hex'): KeyPair
-    keyFromPublic (key: Buffer): KeyPair
+    keyFromPrivate (priv: string, encoding: 'hex'): KeyPair
+    keyFromPrivate (priv: Buffer): KeyPair
+    keyFromPublic (pub: string, encoding: 'hex'): KeyPair
+    keyFromPublic (pub: Buffer): KeyPair
   }
 
   export default {
