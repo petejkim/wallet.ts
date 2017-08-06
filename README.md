@@ -35,7 +35,7 @@ const walletPublicKey = wallet.publicKey
 
 [View Source](https://github.com/petejkim/wallet.ts/blob/master/src/HDKey/index.ts)
 
-## Mnemonic code for generating deterministic keys [(BIP 38)](https://github.com/bitcoin/bips/blob/master/bip-38.mediawiki)
+## Mnemonic code for generating deterministic keys [(BIP 39)](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
 
 ```javascript
 const { randomBytes } = require('crypto')
