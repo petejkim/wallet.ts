@@ -11,9 +11,9 @@
   "scripts": {
     "test": "jest",
     "dist": "rm -rf dist && tsc && babel dist -d dist",
-    "fmt": "prettier --no-semi --single-quote --jsx-single-quote --space-before-function-paren --write '*.js' 'src/**/*.{j,t}s{,x}'",
+    "tsc": "tsc --noEmit --pretty",
     "lint": "tslint -p . --type-check 'src/**/*.ts{,x}'",
-    "watch": "nodemon -e ts,tsx,js,json --watch src/ --exec 'tsc --pretty --noEmit && yarn fmt && yarn lint'"
+    "watch": "nodemon -e ts,tsx,js,json --watch src/ --exec 'yarn tsc && yarn lint'"
   },
   "devDependencies": {
     "@types/bs58": "^3.0.30",
@@ -23,7 +23,6 @@
     "babel-preset-node8": "^1.1.2",
     "jest": "^20.0.4",
     "nodemon": "^1.11.0",
-    "prettier-miscellaneous": "^1.5.2-fix",
     "ts-jest": "^20.0.7",
     "tslint": "^5.5.0",
     "tslint-config-standard": "^6.0.1",
