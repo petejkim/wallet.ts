@@ -131,16 +131,16 @@ describe('isValid', () => {
 
   test('rejects addresses with invalid characters', () => {
     expect(
-      EthereumAddress.isValid('0x5aAeb60!3F3E94C9b9A09f33669435E7Ef1BeAed')
+      EthereumAddress.isValid('0x5aaeb60!3f3e94c9b9a09f33669435e7ef1beaed')
     ).toBe(false)
     expect(
-      EthereumAddress.isValid('0xfB 916095ca1df60bB79Ce92cE3Ea74c37c5d359')
+      EthereumAddress.isValid('0xfb6916095ca1df60bb79ce92c$3ea74c37c5d359')
     ).toBe(false)
     expect(
-      EthereumAddress.isValid('5aAeb6$53F3E94C9b9A09f33669435E7Ef1BeAed')
+      EthereumAddress.isValid('5AAEB6053F3E94CYB9A09F33669435E7EF1BEAED')
     ).toBe(false)
     expect(
-      EthereumAddress.isValid('fB6916095ca1df60#B79Ce92cE3Ea74c37c5d359')
+      EthereumAddress.isValid('fb6916095ca1df60bb79ce92ce3ea74c37c5ggzz')
     ).toBe(false)
   })
 

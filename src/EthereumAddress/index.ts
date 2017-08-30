@@ -44,7 +44,7 @@ export default class EthereumAddress {
       return false
     }
 
-    if (addr.match(/[0-9a-z]{40}/) || addr.match(/[0-9A-Z]{40}/)) {
+    if (addr.match(/[0-9a-f]{40}/) || addr.match(/[0-9A-F]{40}/)) {
       return true
     }
 
