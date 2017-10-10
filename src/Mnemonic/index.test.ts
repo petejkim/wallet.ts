@@ -91,11 +91,29 @@ describe('toSeed', () => {
     Object.keys(testCases).forEach(phrase => {
       const seed = testCases[phrase]
       const mnemonic = Mnemonic.parse(phrase)
-      if (mnemonic) {
-        expect(mnemonic.toSeed().toString('hex')).toBe(seed)
-      } else {
-        expect(mnemonic).not.toBe(null)
-      }
+      expect(mnemonic!.toSeed().toString('hex')).toBe(seed)
     })
+  })
+})
+
+describe('toSeedAsync', () => {
+  test('returns a binary seed derived from a mnemonic phrase', async () => {
+    const testCases: { [key: string]: string } = {
+      'essay wasp gain consider media wage wave sick bachelor knock observe undo':
+        'b7df235f1e8addda6befbdf66f4df613474e8ff6041c7826e4df7fa68aa8c244a1d687eda050f97fc20fc2fcd8c09e19ef21d6c14f523639b033e9fc4e6375a6',
+      'rival admit primary wing salt round prevent town measure void belt almost':
+        '267d6fe81adc779fd2e875d62739cc67690af67025bca8fc6b1f5f3228fb312a1a9b10dedbb3cffc62730438f5afc8725dac6ee11fcd319b98611863226a2957',
+      'express woman recall bike quit chicken cloud empty file sword tobacco rib':
+        'c35ecec5b1986cd3a1407bc3c829610eb5fc9497e59f31c151a5ce422c7ff7e68bdf3343343605a53db8e7376a932a74b3e08296c0b51476f3d288b750089d9d'
+    }
+
+    const keys = Object.keys(testCases)
+    for (let i = 0; i < keys.length; i++) {
+      const phrase = keys[i]
+      const seed = testCases[phrase]
+      const mnemonic = Mnemonic.parse(phrase)
+      const derivedSeed = await mnemonic!.toSeedAsync()
+      expect(derivedSeed.toString('hex')).toBe(seed)
+    }
   })
 })

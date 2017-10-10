@@ -1,7 +1,27 @@
 import crypto from 'crypto'
 import wordlist from './wordlist.en'
 
+export type Pbkdf2SyncFunction = (
+  password: string | Buffer,
+  salt: string | Buffer,
+  iterations: number,
+  keylen: number,
+  digest: string
+) => Buffer
+
+export type Pbkdf2Function = (
+  password: string | Buffer,
+  salt: string | Buffer,
+  iterations: number,
+  keylen: number,
+  digest: string,
+  callback: (err: Error | null, derivedKey: Buffer | null) => void
+) => void
+
 export default class Mnemonic {
+  static pbkdf2Sync: Pbkdf2SyncFunction = crypto.pbkdf2Sync
+  static pbkdf2: Pbkdf2Function = crypto.pbkdf2
+
   private _entropy: Buffer
   private _words: string[]
   private _phrase: string
@@ -85,13 +105,33 @@ export default class Mnemonic {
 
   toSeed (passphrase: string = ''): Buffer {
     const salt = `mnemonic${passphrase}`
-    return crypto.pbkdf2Sync(
+    return Mnemonic.pbkdf2Sync(
       this.phrase.normalize('NFKD'),
       salt.normalize('NFKD'),
       2048,
       64,
       'sha512'
     )
+  }
+
+  toSeedAsync (passphrase: string = ''): Promise<Buffer> {
+    const salt = `mnemonic${passphrase}`
+    return new Promise<Buffer>((resolve, reject) => {
+      Mnemonic.pbkdf2(
+        this.phrase.normalize('NFKD'),
+        salt.normalize('NFKD'),
+        2048,
+        64,
+        'sha512',
+        (err, key) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          resolve(key!)
+        }
+      )
+    })
   }
 }
 
