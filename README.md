@@ -98,4 +98,4 @@ const checksumAddress = EthereumAddress.checksumAddress('0xd11a13f484e2f2bd22d93
 [View Source](https://github.com/petejkim/wallet.ts/blob/master/src/EthereumAddress/index.ts)
 
 - - -
-Copyright © 2017 Peter Jihoon Kim. This project is licensed under the [ISC license](https://raw.githubusercontent.com/petejkim/wallet.ts/master/LICENSE).
+Copyright © 2017-2018 HardFork Inc. This project is licensed under the [ISC license](https://raw.githubusercontent.com/petejkim/wallet.ts/master/LICENSE).
