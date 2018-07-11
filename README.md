@@ -67,7 +67,7 @@ const publicKey = Buffer.from(
 )
 
 const address = BitcoinAddress.from(publicKey).address
-// => '16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM'
+// => '1PMycacnJaSqwwJqjawXBErnLsZ7RkXUAs'
 
 const valid = BitcoinAddress.isValid(address)
 // => true

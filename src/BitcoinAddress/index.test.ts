@@ -4,17 +4,17 @@ describe('from', () => {
   test('derives an Bitcoin address from a given compressed public key', () => {
     const testCases: { [key: string]: string } = {
       '0250863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b2352':
-        '16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM',
+        '1PMycacnJaSqwwJqjawXBErnLsZ7RkXUAs',
       '023e45506283bb3ffe18025513d459fe0ee0dcf0ce15a2c31e8eecc83f93173871':
-        '1K6ojDzpsRUYpP4x4s7KTurXZRmiw1CUwF',
+        '1GhfPBLChyD2uDVAEGKwZNuZjrSd6WNY1z',
       '0265e20d1c10025e11776306b855ffcfb26176cac2bd4bbfa677056524d100f29a':
-        '15Kxj9SRvHu7GRSQWNqfk1gFXKAoBu7y8b',
+        '16zR1jN5KdfBwEvsWuQUANpzLnACb1TWd8',
       '03dbcd1b8c7fad43dafe5a28f593f530a2b30e75f706a5a841b65c6a0dd331a4ef':
-        '1PbV3BLAnjDnboK7GKjHDFGuBHnWzN84Na',
+        '1DLxqg3Y1EKZ39t94Umner5m7eHbvk76zt',
       '02cf7f68382d44fd74319184ae646b27bcb13a247a5ba08ff9ee0429d2186cd50d':
-        '12THF1F65RH89KhMw8JZynScbQEe3qUknK',
+        '13BPfGT7vqH6myhHc7k6F3iRnLBj3xywW6',
       '031a5acf85fca539622d32116a9bb6679e2046d3172097fdca700e90f8646d03b9':
-        '17JLCFRFqrYKUb5rMPsehtv2oYv7sx82zc'
+        '1CWPPiwmDCvRYDmZy1pMenLVMX1jP5QX62'
     }
 
     Object.keys(testCases).forEach(hex => {

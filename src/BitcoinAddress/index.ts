@@ -1,7 +1,7 @@
-import crypto from 'crypto'
-import bs58 from 'bs58'
-import { uncompressPublicKey } from '../util'
 import versions, { VersionBytes } from '../versions'
+
+import bs58 from 'bs58'
+import crypto from 'crypto'
 
 export interface BitcoinAddressConstructorOptions {
   publicKey: Buffer
@@ -18,7 +18,12 @@ export default class BitcoinAddress {
     publicKey,
     version
   }: BitcoinAddressConstructorOptions) {
-    this._publicKey = uncompressPublicKey(publicKey)
+    const length = publicKey.length
+    const firstByte = publicKey[0]
+    if ((length !== 33 && length !== 65) || firstByte < 2 || firstByte > 4) {
+      throw new Error('invalid public key')
+    }
+    this._publicKey = publicKey
     this._version = version || versions.bitcoinMain
   }
 
