@@ -15,13 +15,11 @@ export default class EthereumAddress {
   }
 
   static checksumAddress (address: string): string {
-    const addrLowerCase = address.toLowerCase()
-    if (!EthereumAddress.isValid(addrLowerCase)) {
+    if (!isValidFormat(address)) {
       throw new Error('invalid address')
     }
-    const addr = addrLowerCase.startsWith('0x')
-      ? addrLowerCase.slice(2)
-      : addrLowerCase
+
+    const addr = strip0x(address).toLowerCase()
     const hash = createKeccakHash('keccak256')
       .update(addr, 'ascii')
       .digest('hex')
@@ -39,11 +37,11 @@ export default class EthereumAddress {
   }
 
   static isValid (address: string): boolean {
-    const addr = address.match(/^0[xX]/) ? address.slice(2) : address
-    if (addr.length !== 40) {
+    if (!isValidFormat(address)) {
       return false
     }
 
+    const addr = strip0x(address)
     if (addr.match(/[0-9a-f]{40}/) || addr.match(/[0-9A-F]{40}/)) {
       return true
     }
@@ -79,4 +77,12 @@ export default class EthereumAddress {
     }
     return this._address
   }
+}
+
+function isValidFormat (address: string): boolean {
+  return !!strip0x(address).match(/^[0-9a-fA-F]{40}$/)
+}
+
+function strip0x (hex: string): string {
+  return hex.replace(/^0x/i, '')
 }
