@@ -1,4 +1,5 @@
 import BitcoinAddress from '.'
+import versions from '../versions'
 
 describe('from', () => {
   test('derives an Bitcoin address from a given compressed public key', () => {
@@ -45,6 +46,30 @@ describe('from', () => {
       const publicKey = Buffer.from(hex, 'hex')
       const address = testCases[hex]
       const ea = BitcoinAddress.from(publicKey)
+      expect(ea.address).toBe(address)
+    })
+  })
+
+  test('derives a testnet Bitcoin address from a given compressed public key', () => {
+    const testCases: { [key: string]: string } = {
+      '0250863ad64a87ae8a2fe83c1af1a8403cb53f53e486d8511dad8a04887e5b2352':
+        'n3svudhm7bt6j3nTT9uu1A57Cs9pKK3iXW',
+      '023e45506283bb3ffe18025513d459fe0ee0dcf0ce15a2c31e8eecc83f93173871':
+        'mwDcgERBWzeHgKxmwqJKPJ7tbr3L4kekuq',
+      '0265e20d1c10025e11776306b855ffcfb26176cac2bd4bbfa677056524d100f29a':
+        'mmWNJnT48f6SiMQVEUNqzJ3KCmkuTt8Jue',
+      '03dbcd1b8c7fad43dafe5a28f593f530a2b30e75f706a5a841b65c6a0dd331a4ef':
+        'msrv8j8WpFkopGMkn3kAUmJ5ydtJuxP85T',
+      '02cf7f68382d44fd74319184ae646b27bcb13a247a5ba08ff9ee0429d2186cd50d':
+        'mhhLxKY6jriMZ6AuKgiU4xvkeKnRsocKHm',
+      '031a5acf85fca539622d32116a9bb6679e2046d3172097fdca700e90f8646d03b9':
+        'ms2Lgn2k2EMgKLFBganjUhYpDWcSKu2c73'
+    }
+
+    Object.keys(testCases).forEach(hex => {
+      const publicKey = Buffer.from(hex, 'hex')
+      const address = testCases[hex]
+      const ea = BitcoinAddress.from(publicKey, versions.bitcoinTest)
       expect(ea.address).toBe(address)
     })
   })

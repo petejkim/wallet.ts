@@ -19,7 +19,7 @@ const versions = {
       public: 0x043587cf,
       private: 0x04358394
     },
-    public: 0
+    public: 0x6f
   }
 }
 
