@@ -20,7 +20,22 @@ const versions = {
       private: 0x04358394
     },
     public: 0x6f
+  },
+  litecoinMain: {
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    public: 0x30
+  },
+  bitcoinCashMain: {
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    public: 0
   }
+  
 }
 
 export default versions
