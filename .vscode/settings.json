@@ -7,28 +7,9 @@
     "node_modules/": true
   },
   "editor.formatOnSave": true,
-  "emmet.excludeLanguages": [
-    "javascript",
-    "typescript"
-  ],
-  "prettier.printWidth": 80,
-  "prettier.tabWidth": 2,
-  "prettier.useTabs": false,
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "none",
-  "prettier.bracketSpacing": false,
-  "prettier.bracesSpacing": true,
-  "prettier.breakProperty": false,
-  "prettier.arrowParens": false,
-  "prettier.arrayExpand": false,
-  "prettier.flattenTernaries": false,
-  "prettier.breakBeforeElse": false,
-  "prettier.spaceBeforeFunctionParen": true,
-  "prettier.alignObjectProperties": false,
-  "prettier.semi": false,
-  "prettier.noSpaceEmptyFn": false,
-  "sortImports.languages": [
-    "javascript",
-    "typescript"
-  ]
+  "emmet.excludeLanguages": ["javascript", "typescript"],
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

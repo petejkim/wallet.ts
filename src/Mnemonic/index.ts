@@ -1,5 +1,5 @@
-import crypto from 'crypto'
-import wordlist from './wordlist.en'
+import * as crypto from "crypto";
+import englishWordList from "./wordlist.en";
 
 export type Pbkdf2SyncFunction = (
   password: string | Buffer,
@@ -7,7 +7,7 @@ export type Pbkdf2SyncFunction = (
   iterations: number,
   keylen: number,
   digest: string
-) => Buffer
+) => Buffer;
 
 export type Pbkdf2Function = (
   password: string | Buffer,
@@ -16,126 +16,140 @@ export type Pbkdf2Function = (
   keylen: number,
   digest: string,
   callback: (err: Error | null, derivedKey: Buffer | null) => void
-) => void
+) => void;
 
-export default class Mnemonic {
-  static pbkdf2Sync: Pbkdf2SyncFunction = crypto.pbkdf2Sync
-  static pbkdf2: Pbkdf2Function = crypto.pbkdf2
+export class Mnemonic {
+  public static pbkdf2Sync: Pbkdf2SyncFunction = crypto.pbkdf2Sync;
+  public static pbkdf2: Pbkdf2Function = crypto.pbkdf2;
 
-  private _entropy: Buffer
-  private _words: string[]
-  private _phrase: string
+  private _entropy: Buffer;
+  private _wordList: string[];
+  private _words: string[] | undefined;
+  private _phrase: string | undefined;
 
-  private constructor (entropy: Buffer, words: string[]) {
-    this._entropy = entropy
-    this._words = words
-  }
-
-  static generate (entropy: Buffer): Mnemonic | null {
+  constructor(entropy: Buffer, wordList: string[] = englishWordList) {
     if (entropy.length % 4 !== 0) {
-      return null
+      throw new Error("invalid entropy length - it must be multiples of 4");
+    }
+    if (wordList.length !== 2048) {
+      throw new Error("wordList must contain exactly 2048 words");
     }
 
-    const ent = entropy.length * 8
-    const cs = ent / 32
-
-    const bits = ([] as number[]).concat(...[...entropy].map(uint8ToBitArray))
-    const shasum = crypto.createHash('sha256').update(entropy).digest()
-    const checksum = ([] as number[])
-      .concat(...[...shasum].map(uint8ToBitArray))
-      .slice(0, cs)
-    bits.push(...checksum)
-
-    const words: string[] = []
-    for (let i = 0; i < bits.length / 11; i++) {
-      const idx = elevenBitsToInt(bits.slice(i * 11, (i + 1) * 11))
-      words.push(wordlist[idx])
-    }
-
-    return new Mnemonic(entropy, words)
+    this._entropy = entropy;
+    this._wordList = wordList;
   }
 
-  static parse (phrase: string): Mnemonic | null {
-    const words = phrase.normalize('NFKD').split(' ')
-    if (words.length % 3 !== 0) return null
+  // exists for backward-compatibility
+  public static generate(
+    entropy: Buffer,
+    wordList: string[] = englishWordList
+  ) {
+    return new Mnemonic(entropy, wordList);
+  }
 
-    const bitArrays: number[][] = []
-    for (let i = 0; i < words.length; i++) {
-      const word = words[i]
-      const idx = wordlist.indexOf(word)
-      if (idx === -1) return null
-      bitArrays.push(uint11ToBitArray(idx))
+  public static parse(
+    phrase: string,
+    wordList: string[] = englishWordList
+  ): Mnemonic | null {
+    const words = phrase.split(" ");
+    if (words.length % 3 !== 0) {
+      return null;
     }
 
-    const bits = ([] as number[]).concat(...bitArrays)
-    const cs = bits.length / 33
-    if (cs !== Math.floor(cs)) return null
-    const checksum = bits.slice(-cs)
-    bits.splice(-cs, cs)
+    const bitArrays: number[][] = [];
+    for (const word of words) {
+      const idx = wordList.indexOf(word);
+      if (idx === -1) {
+        return null;
+      }
+      bitArrays.push(uint11ToBitArray(idx));
+    }
 
-    const entropy: number[] = []
+    const bits = flatten(bitArrays);
+    const cs = bits.length / 33;
+    if (cs !== Math.floor(cs)) {
+      return null;
+    }
+    const checksum = bits.slice(-cs);
+    bits.splice(-cs, cs);
+
+    const entropy: number[] = [];
     for (let i = 0; i < bits.length / 8; i++) {
-      entropy.push(eightBitsToInt(bits.slice(i * 8, (i + 1) * 8)))
+      entropy.push(eightBitsToInt(bits.slice(i * 8, (i + 1) * 8)));
     }
-    const entropyBuf = Buffer.from(entropy)
-    const shasum = crypto.createHash('sha256').update(entropyBuf).digest()
-    const checksumFromSha = ([] as number[])
-      .concat(...[...shasum].map(uint8ToBitArray))
-      .slice(0, cs)
+    const entropyBuf = Buffer.from(entropy);
+    const shasum = crypto.createHash("sha256").update(entropyBuf).digest();
+    const checksumFromSha = flatten(
+      Array.from(shasum).map(uint8ToBitArray)
+    ).slice(0, cs);
 
-    if (!arraysEqual(checksumFromSha, checksum)) return null
+    if (!arraysEqual(checksumFromSha, checksum)) {
+      return null;
+    }
 
-    return new Mnemonic(entropyBuf, words)
+    return new Mnemonic(entropyBuf, wordList);
   }
 
-  get entropy (): Buffer {
-    return this._entropy
+  public get entropy(): Buffer {
+    return this._entropy;
   }
 
-  get words (): string[] {
-    return this._words
+  public get words(): string[] {
+    if (!this._words) {
+      const ent = this.entropy.length * 8;
+      const cs = ent / 32;
+
+      const bits = flatten(Array.from(this.entropy).map(uint8ToBitArray));
+      const shasum = crypto.createHash("sha256").update(this.entropy).digest();
+      const checksum = flatten(Array.from(shasum).map(uint8ToBitArray)).slice(
+        0,
+        cs
+      );
+      bits.push(...checksum);
+
+      const words: string[] = [];
+      for (let i = 0; i < bits.length / 11; i++) {
+        const idx = elevenBitsToInt(bits.slice(i * 11, (i + 1) * 11));
+        words.push(this._wordList[idx]);
+      }
+      this._words = words;
+    }
+
+    return this._words;
   }
 
-  get phrase (): string {
+  public get phrase(): string {
     if (!this._phrase) {
-      this._phrase = this._words.join(' ')
+      this._phrase = this.words.join(" ");
     }
-    return this._phrase
+    return this._phrase;
   }
 
-  toSeed (passphrase: string = ''): Buffer {
-    const salt = `mnemonic${passphrase}`
-    return Mnemonic.pbkdf2Sync(
-      this.phrase.normalize('NFKD'),
-      salt.normalize('NFKD'),
-      2048,
-      64,
-      'sha512'
-    )
+  public toSeed(passphrase: string = ""): Buffer {
+    const salt = `mnemonic${passphrase}`;
+    return Mnemonic.pbkdf2Sync(this.phrase, salt, 2048, 64, "sha512");
   }
 
-  toSeedAsync (passphrase: string = ''): Promise<Buffer> {
-    const salt = `mnemonic${passphrase}`
+  public toSeedAsync(passphrase: string = ""): Promise<Buffer> {
+    const salt = `mnemonic${passphrase}`;
     return new Promise<Buffer>((resolve, reject) => {
-      Mnemonic.pbkdf2(
-        this.phrase.normalize('NFKD'),
-        salt.normalize('NFKD'),
-        2048,
-        64,
-        'sha512',
-        (err, key) => {
-          if (err) {
-            reject(err)
-            return
-          }
-          resolve(key!)
+      Mnemonic.pbkdf2(this.phrase, salt, 2048, 64, "sha512", (err, key) => {
+        if (err) {
+          reject(err);
+          return;
         }
-      )
-    })
+        resolve(key!);
+      });
+    });
   }
 }
 
-function uint11ToBitArray (n: number): number[] {
+function flatten<T>(input: T[][]): T[] {
+  const arr: T[] = [];
+  return arr.concat(...input);
+}
+
+function uint11ToBitArray(n: number): number[] {
   return [
     Math.min(n & 1024, 1),
     Math.min(n & 512, 1),
@@ -147,11 +161,11 @@ function uint11ToBitArray (n: number): number[] {
     Math.min(n & 8, 1),
     Math.min(n & 4, 1),
     Math.min(n & 2, 1),
-    Math.min(n & 1, 1)
-  ]
+    Math.min(n & 1, 1),
+  ];
 }
 
-function uint8ToBitArray (n: number): number[] {
+function uint8ToBitArray(n: number): number[] {
   return [
     Math.min(n & 128, 1),
     Math.min(n & 64, 1),
@@ -160,11 +174,11 @@ function uint8ToBitArray (n: number): number[] {
     Math.min(n & 8, 1),
     Math.min(n & 4, 1),
     Math.min(n & 2, 1),
-    Math.min(n & 1, 1)
-  ]
+    Math.min(n & 1, 1),
+  ];
 }
 
-function elevenBitsToInt (bits: number[]): number {
+function elevenBitsToInt(bits: number[]): number {
   return (
     bits[0] * 1024 +
     bits[1] * 512 +
@@ -177,10 +191,10 @@ function elevenBitsToInt (bits: number[]): number {
     bits[8] * 4 +
     bits[9] * 2 +
     bits[10]
-  )
+  );
 }
 
-function eightBitsToInt (bits: number[]): number {
+function eightBitsToInt(bits: number[]): number {
   return (
     bits[0] * 128 +
     bits[1] * 64 +
@@ -190,15 +204,21 @@ function eightBitsToInt (bits: number[]): number {
     bits[5] * 4 +
     bits[6] * 2 +
     bits[7]
-  )
+  );
 }
 
-function arraysEqual (a: Array<any>, b: Array<any>): boolean {
-  if (a === b) return true
-  if (a.length !== b.length) return false
+function arraysEqual(a: any[], b: any[]): boolean {
+  if (a === b) {
+    return true;
+  }
+  if (a.length !== b.length) {
+    return false;
+  }
 
   for (let i = 0; i < a.length; i++) {
-    if (a[i] !== b[i]) return false
+    if (a[i] !== b[i]) {
+      return false;
+    }
   }
-  return true
+  return true;
 }

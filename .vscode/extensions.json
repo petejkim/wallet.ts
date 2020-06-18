@@ -1,6 +1,6 @@
 {
   "recommendations": [
-    "peterjuras.sort-imports",
-    "remimarsal.prettier-now"
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-tslint-plugin"
   ]
 }

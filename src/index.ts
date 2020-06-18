@@ -1,10 +1,9 @@
-import versions, { VersionBytes } from './versions'
-
-import BitcoinAddress from './BitcoinAddress'
-import EthereumAddress from './EthereumAddress'
-import HDKey from './HDKey'
-import Mnemonic from './Mnemonic'
-import util from './util'
+import BitcoinAddress from "./BitcoinAddress";
+import { EthereumAddress } from "./EthereumAddress";
+import { HDKey } from "./HDKey";
+import { Mnemonic } from "./Mnemonic";
+import util from "./util";
+import versions, { VersionBytes } from "./versions";
 
 export {
   BitcoinAddress,
@@ -13,8 +12,8 @@ export {
   Mnemonic,
   util,
   VersionBytes,
-  versions
-}
+  versions,
+};
 
 export default {
   BitcoinAddress,
@@ -22,5 +21,5 @@ export default {
   HDKey,
   Mnemonic,
   util,
-  versions
-}
+  versions,
+};
